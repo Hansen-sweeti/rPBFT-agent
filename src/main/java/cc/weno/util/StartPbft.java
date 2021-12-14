@@ -37,11 +37,6 @@ public class StartPbft {
 
     public static boolean start() {
         StartConfig startConfig = new StartConfig();
-        if (startConfig.startConfig()) {
-            if (new Pbft().pubView()) {
-                return true;
-            }
-        }
-        return false;
+        return startConfig.startConfig()&&new Pbft().pubView();
     }
 }

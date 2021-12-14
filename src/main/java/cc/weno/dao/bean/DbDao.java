@@ -29,7 +29,7 @@ import java.io.Serializable;
  *
  * @author: xiaohuiduan
  * @data: 2020/3/1 上午12:05
- * @description: 讲结果认证保存在levelDB中
+ * @description: 将认证结果保存在levelDB中
  */
 @Data
 public class DbDao implements Serializable {

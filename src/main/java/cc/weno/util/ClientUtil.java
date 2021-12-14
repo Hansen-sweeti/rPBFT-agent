@@ -21,6 +21,7 @@ import cc.weno.p2p.common.Const;
 import cc.weno.p2p.common.MsgPacket;
 
 import java.io.UnsupportedEncodingException;
+import java.util.TimerTask;
 
 /**
  * //                            _ooOoo_
@@ -98,7 +99,32 @@ public class ClientUtil {
             return false;
         }
     }
-
+     /**
+     * 发送客户端消息给主节点
+     *
+     * @param msg
+     */
+    public static void clientRequest(PbftMsg msg)  {
+        // if(msg.getMsgType() != MsgType.REQUEST) return;
+        // 设置目标消息发送方
+        msg.setNode(0);
+        // 设置消息的目标方主节点
+        int master=AllNodeCommonMsg.getPriIndex();
+        msg.setToNode(master);
+        // 发送消息
+        log.info(String.format("代理节点向主节点发送请求:%s",msg));
+        ClientChannelContext client=P2PConnectionMsg.CLIENTS.get(master);
+//        序列化
+        String json = JSON.toJSONString(msg);
+//        log.info(json);
+        MsgPacket msgPacket = new MsgPacket();
+        try {
+            msgPacket.setBody(json.getBytes(MsgPacket.CHARSET));
+            Tio.send(client, msgPacket);
+        } catch (UnsupportedEncodingException e) {
+            log.error("数据utf-8编码错误" + e.getMessage());
+        }
+    }
     /**
      * client对所有的server广播
      *
@@ -109,17 +135,10 @@ public class ClientUtil {
         msg.setNode(Node.getInstance().getIndex());
         // 设置消息的目标方 -1 代表all
         msg.setToNode(-1);
-
+        
         for (int index : P2PConnectionMsg.CLIENTS.keySet()) {
+            if(index==0) continue;
             ClientChannelContext client = P2PConnectionMsg.CLIENTS.get(index);
-
-            // 如果不是CLIENT_REPLAY的消息类型，就进行加密和签名操作
-            if (msg.getMsgType() != MsgType.CLIENT_REPLAY && msg.getMsgType() != MsgType.GET_VIEW) {
-                if (!MsgUtil.preMsg(index, msg)) {
-                    log.error("消息加密失败");
-                    return;
-                }
-            }
             String json = JSON.toJSONString(msg);
             MsgPacket msgPacket = new MsgPacket();
             try {
@@ -138,13 +157,15 @@ public class ClientUtil {
      * @param ip
      * @param port
      */
-    public static void publishIpPort(int index, String ip, int port) {
+    public static void publishIpPort(int index, String ip, int port,int bf) {
         PbftMsg replayMsg = new PbftMsg(MsgType.CLIENT_REPLAY, index);
         replayMsg.setViewNum(AllNodeCommonMsg.view);
         // 将节点消息数据发送过去
         ReplayJson replayJson = new ReplayJson();
         replayJson.setIp(ip);
         replayJson.setPort(port);
+        replayJson.setIndex(index);
+        replayJson.setBf(bf);
         // 公钥部分
         replayJson.setPublicKey(Node.getInstance().getPublicKey());
 
@@ -153,36 +174,4 @@ public class ClientUtil {
         log.info(String.format("广播ip消息：%s", replayMsg));
     }
 
-    /**
-     * 主节点进行广播
-     *
-     * @param msg
-     */
-    public static void prePrepare(PbftMsg msg) {
-        msg.setNode(Node.getInstance().getIndex());
-        msg.setToNode(-1);
-        msg.setViewNum(AllNodeCommonMsg.view);
-        Node node = Node.getInstance();
-        // 限制只有主节点能够发送消息
-        if (node.getIndex() != AllNodeCommonMsg.getPriIndex()) {
-            log.warn("该节点非主节点，不能发送preprepare消息");
-            return;
-        }
-        msg.setMsgType(MsgType.PRE_PREPARE);
-        ClientUtil.clientPublish(msg);
-
-        MsgCollection msgCollection = MsgCollection.getInstance();
-        msg.setMsgType(MsgType.PREPARE);
-        msgCollection.getVotePrePrepare().add(msg.getId());
-        if (!PbftUtil.checkMsg(msg)) {
-            return;
-        }
-        try {
-            msgCollection.getMsgQueue().put(msg);
-            ClientAction.getInstance().doAction(null);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return;
-        }
-    }
 }

@@ -165,11 +165,6 @@ public class P2pClientAioHandler implements ClientAioHandler {
             log.error("客户端将Json数据解析成pbft数据失败");
             return;
         }
-
-        if (pbftMsg.getMsgType() != MsgType.GET_VIEW && !MsgUtil.afterMsg(pbftMsg)) {
-            log.warn("数据检查签名或者解密失败");
-            return;
-        }
         this.msgQueue.put(pbftMsg);
     }
 }

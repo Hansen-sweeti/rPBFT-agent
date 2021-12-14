@@ -11,6 +11,7 @@ import org.tio.client.intf.ClientAioListener;
 import org.tio.core.ChannelContext;
 import org.tio.core.intf.Packet;
 import cc.weno.p2p.P2PConnectionMsg;
+import cc.weno.util.ClientUtil;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -144,6 +145,9 @@ public class P2PClientLinstener implements ClientAioListener {
        log.warn(String.format("客户端%s连接关闭", channelContext));
        // 假如连接中断则移除
         P2PConnectionMsg.CLIENTS.values().removeIf(v -> v.equals(channelContext));
+        // PbftMsg msg0 = new PbftMsg(MsgType.PRE_PREPARE, 0);
+        // msg0.setBody("update view");
+        // ClientUtil.prePrepare(msg0);
 
         /**
          * 假如中断的是主结点

@@ -14,12 +14,13 @@
     </properties>
 
     <build>
-        <finalName>oldpbft</finalName>
+        <finalName>newpbft</finalName>
 
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -40,7 +41,7 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
 <!--                    打包位置-->
-                    <outputDirectory>C:\Users\XiaoHui\Desktop\windows</outputDirectory>
+                    <outputDirectory>E:\blockchain</outputDirectory>
 
 
                 </configuration>
@@ -85,6 +86,12 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.62</version>
         </dependency>
+        <!--  更好用的json工具  -->
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.core</groupId>-->
+<!--            <artifactId>jackson-databind</artifactId>-->
+<!--            <version>2.11.4</version>-->
+<!--        </dependency>-->
 
         <!--t-io-->
         <dependency>
@@ -117,7 +124,18 @@
             <artifactId>guava</artifactId>
             <version>28.2-jre</version>
         </dependency>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- 测试工具类 -->
+        <!-- <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+        </dependency> -->
 
     </dependencies>
 

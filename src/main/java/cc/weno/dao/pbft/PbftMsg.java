@@ -5,6 +5,7 @@ import cc.weno.config.AllNodeCommonMsg;
 import lombok.Data;
 
 import java.util.Objects;
+import java.util.TimerTask;
 
 /**
  * //                            _ooOoo_
@@ -80,6 +81,11 @@ public class PbftMsg {
      */
     private String sign;
 
+    /**
+     * mata 分布式认证接口需要验证的证书
+     */
+    private String certificate;
+
     private PbftMsg() {
     }
 
@@ -114,5 +120,12 @@ public class PbftMsg {
     @Override
     public int hashCode() {
         return Objects.hash(getMsgType(), getBody(), getNode(), getToNode(), getTime(),  getViewNum(), getId());
+    }
+
+    @Override
+    public String toString() {
+        return "PbftMsg [body=" + body + ", certificate=" + certificate + ", id=" + id + ", isOk=" + isOk + ", msgType="
+                + msgType + ", node=" + node + ", sign=" + sign + ", time=" + time + ", toNode="
+                + toNode + ", viewNum=" + viewNum + "]";
     }
 }

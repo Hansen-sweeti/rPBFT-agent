@@ -13,6 +13,8 @@ import cc.weno.p2p.common.MsgPacket;
 import cc.weno.util.ClientUtil;
 import cc.weno.util.MsgUtil;
 import cc.weno.util.PbftUtil;
+import cc.weno.util.TimerUtil;
+
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.tio.client.ClientChannelContext;
@@ -20,6 +22,7 @@ import org.tio.core.ChannelContext;
 import org.tio.core.Tio;
 
 import java.io.UnsupportedEncodingException;
+import java.util.TimerTask;
 
 
 /**
@@ -79,19 +82,11 @@ public class ServerAction {
             case MsgType.GET_VIEW:
                 onGetView(channelContext, msg);
                 break;
-            case MsgType.CHANGE_VIEW:
-                changeView(channelContext, msg);
-                break;
-            case MsgType.PRE_PREPARE:
-                prePrepare(msg);
-                break;
-            case MsgType.PREPARE:
-                prepare(msg);
-                break;
-            case MsgType.COMMIT:
-                commit(msg);
             case MsgType.CLIENT_REPLAY:
                 addClient(msg);
+                break;
+            case MsgType.RESPONSE:
+                response(msg);
                 break;
             default:
                 break;
@@ -99,94 +94,31 @@ public class ServerAction {
     }
 
     /**
-     * commit阶段
-     *
-     * @param msg
-     */
-    private void commit(PbftMsg msg) {
-
-        long count = collection.getAgreeCommit().incrementAndGet(msg.getId());
-
-        log.info(String.format("server接受到commit消息：%s", msg));
-        if (count >= AllNodeCommonMsg.getAgreeNum()) {
-            log.info("数据符合，commit成功，数据可以生成块");
-            collection.getAgreeCommit().remove(msg.getId());
-            PbftUtil.save(msg);
-        }
-    }
-
-    /**
-     * 节点将prepare消息进行广播然后被接收到
-     *
-     * @param msg
-     */
-    private void prepare(PbftMsg msg) {
-        log.info(msgCollection.getVotePrePrepare().contains(msg) + ">>>>");
-        if (!msgCollection.getVotePrePrepare().contains(msg.getId()) || !PbftUtil.checkMsg(msg)) {
-            return;
-        }
-
-        long count = collection.getAgreePrepare().incrementAndGet(msg.getId());
-        log.info(String.format("server接受到prepare消息：%s", msg));
-        if (count >= AllNodeCommonMsg.getAgreeNum()) {
-            log.info("数据符合，发送commit操作");
-            collection.getVotePrePrepare().remove(msg.getId());
-            collection.getAgreePrepare().remove(msg.getId());
-
-            // 进入Commit阶段
-            msg.setMsgType(MsgType.COMMIT);
-            try {
-                collection.getMsgQueue().put(msg);
-                ClientAction.getInstance().doAction(null);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    /**
-     * 主节点发送过来的pre_prepare消息
-     *
-     * @param msg
-     */
-    private void prePrepare(PbftMsg msg) {
-
-        log.info(String.format("server接受到pre-prepare消息：%s", msg));
-
-        msgCollection.getVotePrePrepare().add(msg.getId());
-        if (!PbftUtil.checkMsg(msg)) {
-            return;
-        }
-
-        msg.setMsgType(MsgType.PREPARE);
-        try {
-            msgCollection.getMsgQueue().put(msg);
-            ClientAction.getInstance().doAction(null);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return;
-        }
-    }
-
-    /**
-     * 重新设置view
+     * 将自己的view发送给client
      *
      * @param channelContext
      * @param msg
      */
-    private void changeView(ChannelContext channelContext, PbftMsg msg) {
-        if (node.isViewOK()) {
-            return;
+    private void onGetView(ChannelContext channelContext, PbftMsg msg) {
+        log.info(String.format("代理节点收到视图请求%s", msg));
+        int fromNode = msg.getNode();
+        // 设置消息的发送方
+        msg.setNode(node.getIndex());
+        // 设置消息的目的地
+        msg.setToNode(fromNode);
+        // log.info(String.format("同意此节点%s的申请", msg));
+        msg.setOk(true);
+        msg.setViewNum(AllNodeCommonMsg.view);
+        MsgUtil.signMsg(msg);
+        String jsonView = JSON.toJSONString(msg);
+        MsgPacket msgPacket = new MsgPacket();
+        try {
+            msgPacket.setBody(jsonView.getBytes(MsgPacket.CHARSET));
+            Tio.send(channelContext, msgPacket);
+        } catch (UnsupportedEncodingException e) {
+            log.error(String.format("代理节点回复view消息失败%s", e.getMessage()));
         }
-        long count = collection.getViewNumCount().incrementAndGet(msg.getViewNum());
-
-        if (count >= AllNodeCommonMsg.getAgreeNum() && !node.isViewOK()) {
-            collection.getViewNumCount().clear();
-            node.setViewOK(true);
-            AllNodeCommonMsg.view = msg.getViewNum();
-            log.info("视图变更完成OK");
-        }
+   
     }
 
     /**
@@ -195,6 +127,7 @@ public class ServerAction {
      * @param msg
      */
     private void addClient(PbftMsg msg) {
+        log.info(String.format("收到广播消息%s",msg));
         if (!ClientUtil.haveClient(msg.getNode())) {
             String ipStr = msg.getBody();
             ReplayJson replayJson = JSON.parseObject(ipStr, ReplayJson.class);
@@ -210,39 +143,38 @@ public class ServerAction {
             AllNodeCommonMsg.allNodeAddressMap.put(msg.getNode(), info);
             AllNodeCommonMsg.publicKeyMap.put(msg.getNode(), replayJson.getPublicKey());
 
-            log.info(String.format("节点%s添加ip地址：%s", node, info));
+            log.info(String.format("添加节点%d的ip地址：%s", msg.getNode(), info));
             if (context != null) {
                 // 添加client
                 ClientUtil.addClient(msg.getNode(), context);
             }
         }
     }
-
-
+    
     /**
-     * 将自己的view发送给client
+     * 处理共识节点的认证结果
      *
-     * @param channelContext
      * @param msg
-     */
-    private void onGetView(ChannelContext channelContext, PbftMsg msg) {
-        log.info("server结点回复视图请求操作");
-        int fromNode = msg.getNode();
-        // 设置消息的发送方
-        msg.setNode(node.getIndex());
-        // 设置消息的目的地
-        msg.setToNode(fromNode);
-        log.info(String.format("同意此节点%s的申请", msg));
-        msg.setOk(true);
-        msg.setViewNum(AllNodeCommonMsg.view);
-        MsgUtil.signMsg(msg);
-        String jsonView = JSON.toJSONString(msg);
-        MsgPacket msgPacket = new MsgPacket();
-        try {
-            msgPacket.setBody(jsonView.getBytes(MsgPacket.CHARSET));
-            Tio.send(channelContext, msgPacket);
-        } catch (UnsupportedEncodingException e) {
-            log.error(String.format("server结点发送view消息失败%s", e.getMessage()));
+    */
+    private void  response(PbftMsg msg) {
+        long count = collection.getAgreeReply().incrementAndGet(msg.getId());
+        // log.info(count+"");
+        if (count >AllNodeCommonMsg.getAgreeNum() ) return;
+        log.info(String.format("收到共识节点返回response%d:%s",count,msg));
+
+        if (count == AllNodeCommonMsg.getAgreeNum() ) {
+            // 将节点认证消息保存
+            // DbUtil.save();
+
+            // TODO 返回认证成功给客户端
+            log.info(String.format("认证成功,时间%dms",System.currentTimeMillis()-msg.getTime()));
+            TimerUtil.schedule(()->{
+                collection.getAgreeReply().remove(msg.getId());
+            },40);
+            TimerTask timer=collection.getTimerQueue().get(msg.getId());
+            timer.cancel();
         }
+
     }
+
 }

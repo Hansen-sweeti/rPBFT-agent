@@ -77,13 +77,13 @@ public class StartConfig {
         // allNodeAddressMap保存了结点index和address信息。
         for (NodeBasicInfo basicInfo : AllNodeCommonMsg.allNodeAddressMap.values()) {
             NodeAddress address = basicInfo.getAddress();
-            log.info(String.format("节点%d尝试链接%s", node.getIndex(), basicInfo));
+            log.info(String.format("节点%d尝试连接%s", node.getIndex(), basicInfo));
             ClientChannelContext context = ClientUtil.clientConnect(address.getIp(), address.getPort());
             if (context != null) {
                 // 将通道进行保存
                 ClientUtil.addClient(basicInfo.getIndex(), context);
             } else {
-                log.warn(String.format("结点%d-->%s：%d连接失败", basicInfo.getIndex(), address.getIp(), address.getPort()));
+                log.warn(String.format("结点%d-->%s：%d连接失败",basicInfo.getIndex(), address.getIp(), address.getPort()));
             }
         }
         log.info("client链接服务端的数量" + P2PConnectionMsg.CLIENTS.size());
@@ -122,6 +122,12 @@ public class StartConfig {
      * @return 成功返回true
      */
     private boolean initAddress() {
+        // if (AllNodeCommonMsg.allNodeAddressMap.containsKey(node.getIndex())) {
+        //     log.error("已经存在此节点");
+        //     return false;
+        // }
+        PbftUtil.writeIpToFile(node);
+
         FileReader fileReader = new FileReader(PbftUtil.ipJsonPath);
         List<String> ipJsonStr = fileReader.readLines();
         for (String s : ipJsonStr) {
@@ -132,19 +138,11 @@ public class StartConfig {
             NodeBasicInfo nodeBasicInfo = new NodeBasicInfo();
             nodeBasicInfo.setAddress(nodeAddress);
             nodeBasicInfo.setIndex(replayJson.getIndex());
+            nodeBasicInfo.setBf(replayJson.getBf());
             AllNodeCommonMsg.allNodeAddressMap.put(replayJson.getIndex(), nodeBasicInfo);
             AllNodeCommonMsg.publicKeyMap.put(replayJson.getIndex(), replayJson.getPublicKey());
         }
 
-        // 将自己节点信息写入文件
-        if (AllNodeCommonMsg.allNodeAddressMap.values().size() < 3 && !AllNodeCommonMsg.allNodeAddressMap.containsKey(node.getIndex())) {
-            PbftUtil.writeIpToFile(node);
-            return true;
-        }
-        if (AllNodeCommonMsg.allNodeAddressMap.containsKey(node.getIndex())) {
-            log.error("已经存在此节点");
-            return false;
-        }
         log.info(String.format("ip.json文件数量%s", ipJsonStr.size()));
         log.info(String.format("内存地址%s", AllNodeCommonMsg.allNodeAddressMap.values().size()));
         return AllNodeCommonMsg.allNodeAddressMap.values().size() == ipJsonStr.size();

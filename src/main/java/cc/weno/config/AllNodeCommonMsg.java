@@ -46,7 +46,7 @@ public class AllNodeCommonMsg {
     }
 
     public static int getAgreeNum(){
-        return 2 * AllNodeCommonMsg.getMaxf() + 1;
+        return 2 * AllNodeCommonMsg.getMaxf()+1 ;
     }
 
     /**
@@ -55,7 +55,7 @@ public class AllNodeCommonMsg {
      * @return
      */
     public static int getPriIndex() {
-        return view % getSize();
+        return view % getSize()+1;
     }
 
     /**
@@ -71,14 +71,14 @@ public class AllNodeCommonMsg {
 
     /**
      * view的值，0代表view未被初始化
-     * 当前视图的编号，通过这个编号可以算出主节点的序号
+     * 当前视图的编号，通过这个编号可以算出主节点的序号(主节点=view+1)
      */
-    public volatile static int view = 0;
+    public volatile  static  int view = 0;
 
     /**
-     * @return 区块链中结点的总结点数
+     * @return 代理节点只包含区块链中结点的总结点数
      */
     public static int getSize() {
-        return allNodeAddressMap.size() + 1;
+        return allNodeAddressMap.size()-1 ;
     }
 }

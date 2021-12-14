@@ -7,7 +7,9 @@ import com.google.common.util.concurrent.AtomicLongMap;
 import lombok.Data;
 
 import java.util.Set;
+import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicLong;
@@ -61,14 +63,24 @@ public class MsgCollection {
     private BlockingQueue<PbftMsg> msgQueue = new LinkedBlockingQueue<PbftMsg>();
 
     /**
-     * 这个是在初始化视图的时候会用到
+     * 这个是在初始化视图集合
      */
     private AtomicLongMap<Integer> viewNumCount = AtomicLongMap.create();
+    /**
+     * 消息定时器
+     */
+    private ConcurrentHashMap<String, TimerTask> timerQueue = new  ConcurrentHashMap<>(32);
 
     /**
-     * 参与认证的节点
+     * 切换视图集合
+     */
+    private AtomicLongMap<Integer> changeViewNumCount = AtomicLongMap.create();
+
+    /**
+     * 参与认证的节点 
      */
     private CopyOnWriteArrayList<DbDao> dbDaos = new CopyOnWriteArrayList<DbDao>();
+    
     /**
      * 不赞同视图的数量
      */
@@ -89,6 +101,11 @@ public class MsgCollection {
      * commit阶段
      */
     private AtomicLongMap<String> agreeCommit = AtomicLongMap.create();
+    
+    /**
+     * reply阶段
+     */
+    private AtomicLongMap<String> agreeReply = AtomicLongMap.create();
 
 
 }

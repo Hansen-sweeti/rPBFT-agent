@@ -150,15 +150,10 @@ public class P2PServerAioHandler implements ServerAioHandler {
         if (!JSON.isValid(msg)) {
             return;
         }
-        log.info("服务端接受消息：" + msg);
+        //log.info("服务端接受消息：" + msg);
         PbftMsg pbftMsg = JSON.parseObject(msg, PbftMsg.class);
         if (pbftMsg == null) {
             log.error("客户端将Json数据解析成pbft数据失败");
-            return;
-        }
-
-        if ((pbftMsg.getMsgType() != MsgType.CLIENT_REPLAY && pbftMsg.getMsgType() != MsgType.GET_VIEW) && !MsgUtil.afterMsg(pbftMsg)) {
-            log.warn("数据检查签名或者解密失败");
             return;
         }
         // 服务端对消息进行处理

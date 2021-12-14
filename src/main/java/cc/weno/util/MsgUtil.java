@@ -1,7 +1,10 @@
 package cc.weno.util;
 
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
+import cn.hutool.crypto.asymmetric.Sign;
+import cn.hutool.crypto.asymmetric.SignAlgorithm;
 import cc.weno.config.AllNodeCommonMsg;
 import cc.weno.dao.node.Node;
 import cc.weno.dao.pbft.PbftMsg;
@@ -42,6 +45,10 @@ public class MsgUtil {
      * 直接的RSA
      */
     private static RSA selfRsa = new RSA(Node.getInstance().getPrivateKey(), Node.getInstance().getPublicKey());
+    /**
+     * 签名
+     */
+    private static Sign selfSign = SecureUtil.sign(SignAlgorithm.MD5withRSA,Node.getInstance().getPrivateKey(),null);
 
     private static Map<Integer, String> publicKeyMap = AllNodeCommonMsg.publicKeyMap;
 
@@ -52,8 +59,22 @@ public class MsgUtil {
      */
     public static void signMsg(PbftMsg msg) {
         String hash = String.valueOf(msg.hashCode());
-        String sign = selfRsa.encryptBase64(hash, KeyType.PrivateKey);
-        msg.setSign(sign);
+        byte[] sign= selfSign.sign(hash.getBytes());
+        // String sign = selfRsa.encryptBase64(hash, KeyType.PrivateKey);
+        msg.setSign(parseByte2HexStr(sign));
+    }
+
+     // 格式装换
+     public  static String parseByte2HexStr(byte[] buf) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < buf.length; i++) {
+            String hex = Integer.toHexString(buf[i] & 0xFF);
+            if (hex.length() == 1) {
+                hex = '0' + hex;
+            }
+            sb.append(hex.toUpperCase());
+        }
+        return sb.toString();
     }
 
     /**
@@ -117,9 +138,9 @@ public class MsgUtil {
      * @return
      */
     public static boolean preMsg(int index, PbftMsg msg) {
-        if (!encryptMsg(index, msg)) {
-            return false;
-        }
+        // if (!encryptMsg(index, msg)) {
+        //     return false;
+        // }
         signMsg(msg);
         return true;
     }
@@ -131,10 +152,10 @@ public class MsgUtil {
      * @return
      */
     public static boolean afterMsg(PbftMsg msg) {
-        if (!isRealMsg(msg) || !decryptMsg(msg)) {
-            return false;
-        }
-        return true;
+        // if (!isRealMsg(msg) || !decryptMsg(msg)) {
+        //     return false;
+        // }
+        return isRealMsg(msg) ;
     }
 
     /**
@@ -145,28 +166,31 @@ public class MsgUtil {
      * @return
      */
     public static boolean isRealMsg(PbftMsg msg) {
-        String publicKey = publicKeyMap.get(msg.getNode());
-        RSA rsa;
-        try {
-            rsa = new RSA(null, publicKey);
-        } catch (Exception e) {
-            log.error(String.format("创建公钥RSA失败%s", e.getMessage()));
-            return false;
-        }
         // 获得此时消息的hash值
         String nowHash = String.valueOf(msg.hashCode());
-
         String sign = msg.getSign();
         try {
-            // 获得hash值
-            String hash = rsa.decryptStr(sign, KeyType.PublicKey);
-            if (nowHash.equals(hash)) {
-                return true;
-            }
+            Sign pubSign = SecureUtil.sign(SignAlgorithm.MD5withRSA,null,publicKeyMap.get(msg.getNode()));
+            boolean verify=pubSign.verify(nowHash.getBytes(),parseHexStr2Byte(sign));
+//            log.info(verify+"");
+            return verify;
         } catch (Exception e) {
             log.warn(String.format("验证签名失效%s", e.getMessage()));
         }
         return false;
+    }
+
+    // 格式转换
+    public static byte[] parseHexStr2Byte(String hexStr) {
+        if (hexStr.length() < 1)
+            return null;
+        byte[] result = new byte[hexStr.length() / 2];
+        for (int i = 0; i < hexStr.length() / 2; i++) {
+            int high = Integer.parseInt(hexStr.substring(i * 2, i * 2 + 1), 16);
+            int low = Integer.parseInt(hexStr.substring(i * 2 + 1, i * 2 + 2), 16);
+            result[i] = (byte) (high * 16 + low);
+        }
+        return result;
     }
 
 }

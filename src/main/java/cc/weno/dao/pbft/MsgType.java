@@ -1,3 +1,4 @@
+
 package cc.weno.dao.pbft;
 /**
  * //                            _ooOoo_
@@ -27,33 +28,33 @@ package cc.weno.dao.pbft;
  * @description: 消息类型
  */
 public class MsgType {
-    /**
-     * 请求视图
-     */
-    public static final int GET_VIEW = -1;
 
     /**
-     * 变更视图
+     * 代理节点发送请求到主节点
      */
-    public static final int CHANGE_VIEW = 0;
-
+    public static final int REQUEST= 1;
+    
     /**
-     * 预准备阶段
+     * 回复给代理节点阶段
      */
-    public static final int PRE_PREPARE = 1;
-
-    /**
-     * 准备阶段
-     */
-    public static final int PREPARE = 2;
-
-    /**
-     * 提交阶段
-     */
-    public static final int COMMIT = 3;
-
+    public static final int  RESPONSE= 5;
     /**
      * ip消息回复回复阶段
      */
-    public static final int CLIENT_REPLAY = 4;
+    public static final int  CLIENT_REPLAY = 6;
+
+    /**
+     * 请求视图(代理节点存在)
+     */
+    public static final int GET_VIEW = 7;
+
+    /**
+     * 请求视图（代理节点不存在）
+     */
+    public static final int INITI_VIEW = 8;
+    
+    /**
+     * 变更视图
+     */
+    public static final int CHANGE_VIEW = 9;
 }

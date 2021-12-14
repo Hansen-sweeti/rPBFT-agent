@@ -39,5 +39,10 @@ public class NodeBasicInfo {
      * 这个代表了结点的序号
      */
     private int index;
+    /* *
+    *这个节点是否为拜占庭节点 
+    *0代表正常节点 ，1表示恶意节点
+    */
+    private int bf ;
 
 }

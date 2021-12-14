@@ -38,29 +38,29 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Pbft {
 
-    private Node node = Node.getInstance();
+    private  Node node = Node.getInstance();
 
     /**
      * 发送view请求
      *
      * @return
      */
-    public boolean pubView() {
+    public  boolean pubView() {
 
         /**
          * 如果区块链中的网络节点小于3
          */
-        if (AllNodeCommonMsg.allNodeAddressMap.size() < 3) {
-            log.warn("区块链中的节点小于等于3");
+        if (AllNodeCommonMsg.allNodeAddressMap.size() <= 4) {
+            log.warn("区块链中的节点小于4");
             node.setViewOK(true);
             // 将节点消息广播出去
-            ClientUtil.publishIpPort(node.getIndex(), node.getAddress().getIp(), node.getAddress().getPort());
+            ClientUtil.publishIpPort(node.getIndex(), node.getAddress().getIp(), node.getAddress().getPort(),node.getBf());
             return true;
         }
-
+        ClientUtil.publishIpPort(node.getIndex(), node.getAddress().getIp(), node.getAddress().getPort(),node.getBf());
         log.info("结点开始进行view同步操作");
         // 初始化view的msg
-        PbftMsg view = new PbftMsg(MsgType.GET_VIEW, node.getIndex());
+        PbftMsg view = new PbftMsg(MsgType.INITI_VIEW, node.getIndex());
         ClientUtil.clientPublish(view);
         return true;
     }
@@ -70,8 +70,12 @@ public class Pbft {
      *
      * @return
      */
-    public boolean changeView() {
+    public  void changeView() {
 
-        return true;
+        PbftMsg view = new PbftMsg(MsgType.CHANGE_VIEW, node.getIndex());
+        AllNodeCommonMsg.view=(AllNodeCommonMsg.view+1)%AllNodeCommonMsg.getSize();
+        log.info(String.format("changeView节点数量%d", AllNodeCommonMsg.getSize()));
+        view.setViewNum(AllNodeCommonMsg.view);
+        ClientUtil.clientPublish(view);
     }
 }
