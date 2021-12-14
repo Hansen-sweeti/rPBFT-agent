@@ -25,88 +25,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bd61894-b69e-4acb-865c-de791438e846" name="Default Changelist" comment=":wrench: 修改一下代码&#10;:bento: 更新README">
-      <change afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.factorypath" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.project" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.core.resources.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.apt.core.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.m2e.core.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/.rand" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/ca.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/client.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/index.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/rootca.key" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/rootca.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/rootca.srl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/serial" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/server.csr" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/server.key" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/ca/server.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cc/weno/util/TimerUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/cc/weno/rsa_sign.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/config/AllNodeCommonMsg.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/config/StartConfig.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/dao/bean/DbDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/dao/bean/ReplayJson.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/dao/node/Node.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/dao/node/NodeAddress.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/dao/node/NodeBasicInfo.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/dao/pbft/MsgCollection.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/dao/pbft/MsgType.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/dao/pbft/PbftMsg.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/p2p/P2PConnectionMsg.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/p2p/client/ClientAction.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/p2p/client/P2PClientLinstener.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/p2p/client/P2pClientAioHandler.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/p2p/common/Const.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/p2p/common/MsgPacket.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/p2p/server/P2PServerAioHandler.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/p2p/server/ServerAction.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/p2p/server/ServerListener.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/util/ClientUtil.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/util/DbUtil.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/util/MsgUtil.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/util/Pbft.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/util/PbftUtil.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/util/StartPbft.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/util/TimerUtil$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/cc/weno/util/TimerUtil.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ip.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/log4j.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/newpbft.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/test-classes/cc/weno/Rsa_sign.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/PBFT.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+    <list default="true" id="6bd61894-b69e-4acb-865c-de791438e846" name="Default Changelist" comment="更新README">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/config/AllNodeCommonMsg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/config/AllNodeCommonMsg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/config/StartConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/config/StartConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/dao/bean/DbDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/dao/bean/DbDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/dao/bean/ReplayJson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/dao/bean/ReplayJson.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/dao/node/NodeBasicInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/dao/node/NodeBasicInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/dao/pbft/MsgCollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/dao/pbft/MsgCollection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/dao/pbft/MsgType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/dao/pbft/MsgType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/dao/pbft/PbftMsg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/dao/pbft/PbftMsg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/p2p/client/ClientAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/p2p/client/ClientAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/p2p/client/P2PClientLinstener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/p2p/client/P2PClientLinstener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/p2p/client/P2pClientAioHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/p2p/client/P2pClientAioHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/p2p/server/P2PServerAioHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/p2p/server/P2PServerAioHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/p2p/server/ServerAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/p2p/server/ServerAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/util/ClientUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/util/ClientUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/util/MsgUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/util/MsgUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/util/Pbft.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/util/Pbft.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/util/PbftUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/util/PbftUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cc/weno/util/StartPbft.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/weno/util/StartPbft.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,7 +96,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -361,7 +281,7 @@
       <workItem from="1634200016219" duration="17926000" />
       <workItem from="1634284288289" duration="4998000" />
       <workItem from="1634304899822" duration="2161000" />
-      <workItem from="1639478656015" duration="1736000" />
+      <workItem from="1639478656015" duration="3248000" />
     </task>
     <task id="LOCAL-00001" summary="完成一部分的消息类型定义">
       <created>1579681270431</created>
@@ -461,7 +381,21 @@
       <option name="project" value="LOCAL" />
       <updated>1610719821463</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary=":wrench: 修改一下代码&#10;:bento: 更新README">
+      <created>1639480681806</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1639480681806</updated>
+    </task>
+    <task id="LOCAL-00016" summary="更新README">
+      <created>1639481294873</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1639481294873</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -497,7 +431,9 @@
     <MESSAGE value=":wrench: 更改日志记录方式，只记录自己写的日志" />
     <MESSAGE value=":truck: 将所有的包移动到cc.weno中&#10;:sparkles: 添加私钥签名和公钥加密" />
     <MESSAGE value=":wrench: 修改一下代码&#10;:bento: 更新README" />
-    <option name="LAST_COMMIT_MESSAGE" value=":wrench: 修改一下代码&#10;:bento: 更新README" />
+    <MESSAGE value=":bento: 更新README" />
+    <MESSAGE value="更新README" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新README" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand>
