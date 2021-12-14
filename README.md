@@ -1,6 +1,6 @@
 
 
-关于代码介绍方法，可以去看我的[博客](https://www.cnblogs.com/xiaohuiduan/category/1635542.html)。里面介绍了一些功能的实现思路和方法，以及使用到的一些库的介绍。
+关于代码介绍方法，可以去看[博客](https://www.cnblogs.com/xiaohuiduan/category/1635542.html)。里面介绍了一些功能的实现思路和方法，以及使用到的一些库的介绍。
 
 - [PBFT && RBFT算法流程](https://www.cnblogs.com/xiaohuiduan/p/12210891.html)
 - [t-io Java构建p2p网络](https://www.cnblogs.com/xiaohuiduan/p/12302024.html)
@@ -31,8 +31,8 @@ mvn package
 
 ![](imgs/image-20200616113250619.png)
 
-### 包运行方法
-
+### master包运行方法
+master包是共识节点
 ```bash
 java -jar 包名 ip地址 端口号 序号 文件保存位置
 ```
@@ -41,6 +41,9 @@ java -jar 包名 ip地址 端口号 序号 文件保存位置
 - 序号：节点的序号，必须独一无二
 - 文件保存位置
 
+
+### agent包运行方法
+agent包是代理节点，用来接收请求（目前没有很明确的前端请求，用发送消息代替）
 例如：
 
 ```bash
@@ -59,10 +62,7 @@ java -jar oldpbft-jar-with-dependencies.jar 127.0.0.1 8080 0 C:\\Users\\XiaoHui\
 
 ```java
 int i = 0;
-String ip = "127.0.0.1";
-int port = 8080 + i;
-StartConfig.basePath = "C:\\Users\\XiaoHui\\Desktop\\data\\";
-int index = i;
+
 ```
 
 # 注意点
@@ -84,11 +84,3 @@ int index = i;
 3. 只有主节点能够发送消息，其他节点会发送消息失败。如何想使用非主节点发送消息，可以去修改代码。如下图所示：将红框内的代码注释即可。![](imgs/image-20210115222620783.png)
 
 
-
-# 完成功能
-
-实际上代码完成的功能很少很少，就是完成了PBFT中的节点加入功能，然后还有消息发送PBFT认证功能，以及交易数据保存的功能**<只写了函数，需要自己去调用>**。其他的就emm没有做。本人对区块链也不是特别的了解，所以有些功能感觉实现起来的代码怪怪的。
-
-这个仓库代码大概率不会进行更新了，因为emmmmmm，考研去了。
-
-考研结束，重新更新一波。
