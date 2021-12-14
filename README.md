@@ -1,6 +1,6 @@
 
 
-关于代码介绍方法，可以去看[博客](https://www.cnblogs.com/xiaohuiduan/category/1635542.html)。里面介绍了一些功能的实现思路和方法，以及使用到的一些库的介绍。
+关于代码介绍方法，可以看[博客](https://www.cnblogs.com/xiaohuiduan/category/1635542.html)。里面介绍了一些功能的实现思路和方法，以及使用到的一些库的介绍。
 
 - [PBFT && RBFT算法流程](https://www.cnblogs.com/xiaohuiduan/p/12210891.html)
 - [t-io Java构建p2p网络](https://www.cnblogs.com/xiaohuiduan/p/12302024.html)
