@@ -1,3 +1,7 @@
+# **项目必须和另一个pbft-agent一起使用**
+
+# 具体有什么问题或者进一步想法的同学可以关注公众号 **CppCoding** 联系我
+关于代码介绍方法，可以去看[博客](https://www.cnblogs.com/xiaohuiduan/category/1635542.html)。里面介绍了一些功能的实现思路和方法，以及使用到的一些库的介绍。
 
 
 关于代码介绍方法，看[博客](https://www.cnblogs.com/xiaohuiduan/category/1635542.html)。里面介绍了一些功能的实现思路和方法，以及使用到的一些库的介绍。
@@ -13,12 +17,6 @@
 
 
 
-## 打包
-
-首先在maven中更改jar包生成位置
-
-![](imgs/image-20200616110901064.png)
-
 然后使用命令生成jar包
 
 ```bash
@@ -30,6 +28,8 @@ mvn package
 在**IDEA运行**着将第二块区域进行注释（第一块区域不要注释），使用jar包运行则将第一块区域进行注释（第二块区域不要注释）
 
 ![](imgs/image-20200616113250619.png)
+下图是创建代理节点，注意端口不能与共识节点重复
+![](imgs/img.png)
 
 ### master包运行方法
 master包是共识节点
@@ -47,7 +47,7 @@ agent包是代理节点，用来接收请求（目前没有很明确的前端请
 例如：
 
 ```bash
-java -jar oldpbft-jar-with-dependencies.jar 127.0.0.1 8080 0 C:\\Users\\XiaoHui\\Desktop\\data\\
+java -jar pbft-agent.jar 127.0.0.1 8080 0 C:\\Users\\XiaoHui\\Desktop\\data\\
 ```
 
 因此，你可以在本机上运行多个节点（保证端口号和序号不同即可）。
